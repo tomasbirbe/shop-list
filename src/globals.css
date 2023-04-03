@@ -50,5 +50,12 @@ h6 {
 
 #root,
 #__next {
+	height: 100%;
 	isolation: isolate;
+}
+
+#portal {
+	position: absolute;
+	top: 0;
+	left: 0;
 }
