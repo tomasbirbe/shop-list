@@ -12,12 +12,17 @@ type Props = {
 
 const AlertContainer = styled.div({
   gridArea: "2 / 2 / 3 / 3",
-  background: "rgba(0,0,0,0.75)",
+  background: "#F4E07E",
   maxWidth: "400px",
   minWidth: "300px",
   width: "fit-content",
   height: "fit-content",
   placeSelf: "center",
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
+  paddingBlock: "18px",
+  alignItems: "center",
 });
 const Overlay = styled.div({
   gridArea: "1 / 1 / -1 / -1",
@@ -27,8 +32,6 @@ const Overlay = styled.div({
 const Container = styled.div({
   position: "fixed",
   display: "grid",
-  // gridTemplateColumns: "minmax(50px, 1fr) minmax(200px,400px) minmax(50px, 1fr)",
-  // gridTemplateRows: "minmax(50px, 1fr) minmax(100px,300px) minmax(50px, 1fr)",
   gridTemplateColumns: "repeat(3,1fr)",
   gridTemplateRows: "repeat(3,1fr)",
   top: "0",
@@ -36,29 +39,48 @@ const Container = styled.div({
   height: "100vh",
 });
 
-const PrimaryButton = styled.button({});
-const SecondaryButton = styled.button({});
+const PrimaryButton = styled.button({
+  background: "#DA2C38",
+  color: "white",
+  rounded: "4px",
+  border: "none",
+  paddingBlock: "8px",
+  paddingInline: "8px",
+  borderRadius: "4px",
+  cursor: "pointer",
+});
+
+const SecondaryButton = styled.button({
+  background: "transparent",
+  rounded: "4px",
+  border: "1px solid #DA2C38",
+  color: "#DA2C38",
+  paddingBlock: "8px",
+  paddingInline: "8px",
+  borderRadius: "4px",
+  cursor: "pointer",
+});
+
 const Title = styled.h2({});
 const TitleContainer = styled.div({
   display: "grid",
   placeItems: "center",
   height: "20%",
-  background: "red",
   paddingBlock: "8px",
 });
 const MessageContainer = styled.div({
-  background: "blue",
   height: "60%",
+  width: "80%",
   paddingBlock: "8px",
-  paddingInline: "12px",
+  paddingInline: "18px",
 });
 const Message = styled.p({});
 const Footer = styled.footer({
   height: "20%",
-  background: "green",
   display: "flex",
   justifyContent: "space-around",
   paddingBlock: "8px",
+  width: "100%",
 });
 
 export function Alert({ isOpen, onClose, message, title, onCancel, onConfirm }: Props) {
@@ -77,12 +99,12 @@ export function Alert({ isOpen, onClose, message, title, onCancel, onConfirm }: 
               <Message>{message}</Message>
             </MessageContainer>
             <Footer>
-              <SecondaryButton type="button" onClick={onCancel}>
+              <PrimaryButton type="button" onClick={onCancel}>
                 Cancelar
-              </SecondaryButton>
-              <PrimaryButton type="button" onClick={onConfirm}>
-                Aceptar
               </PrimaryButton>
+              <SecondaryButton type="button" onClick={onConfirm}>
+                Aceptar
+              </SecondaryButton>
             </Footer>
           </AlertContainer>
         </Container>

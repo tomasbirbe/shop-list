@@ -9,7 +9,11 @@ type Props = {
 
 const ModalContainer = styled.div({
   gridArea: "2 / 2 / 3 / 3",
-  background: "rgba(0,0,0,0.75)",
+  background: "#F4E07E",
+  borderRadius: "4px",
+  paddingBlock: "32px",
+  paddingInline: "32px",
+  placeSelf: "center",
 });
 const Overlay = styled.div({
   gridArea: "1 / 1 / -1 / -1",

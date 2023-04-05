@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getInputValuesFromEvent, isDuplicated } from "./utils";
 import type { Product } from "./types";
 import { ListOfProducts } from "./components/ListOfProducts";
@@ -29,23 +29,17 @@ const DEFAULT_PRODUCTS = [
 const Container = styled.div({
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-between",
   height: "100%",
+  background: "#F6E697",
 });
 
 const Main = styled.main({
   display: "flex",
-  paddingBlockEnd: "70px",
   flexDirection: "column",
   alignItems: "center",
+  paddingBlock: "1.5em",
   overflow: "auto",
-});
-
-const Title = styled.h1({
-  lineHeight: "3",
-});
-const Subtitle = styled.h2({
-  lineHeight: "3",
+  height: "100%",
 });
 
 const Footer = styled.footer({
@@ -53,18 +47,26 @@ const Footer = styled.footer({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-around",
-  position: "fixed",
-  bottom: "0",
-  height: "50px",
   width: "100%",
-  background: "white",
+  background: "#F4E07E",
+  minHeight: "70px",
+  boxShadow: `0px -0.2px 0.2px rgba(157, 133, 14, 0.2) ,
+    0.1px -0.6px 0.7px -0.8px rgba(157, 133, 14, 0.2) ,
+    0.3px -1.4px 1.6px -1.7px rgba(157, 133, 14, 0.2) ,
+    0.8px -3.5px 4px -2.5px rgba(157, 133, 14, 0.2) `,
 });
 
 function App() {
-  const [products, setProducts] = useState<Product[]>(DEFAULT_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>(() => {
+    return JSON.parse(window.localStorage.getItem("products") || "") || [];
+  });
   const [openForm, setOpenForm] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [productToDelete, setProductToDelete] = useState("");
+
+  useEffect(() => {
+    window.localStorage.setItem("products", JSON.stringify(products));
+  }, [products]);
 
   function handleOpenForm() {
     setOpenForm(!openForm);
@@ -98,9 +100,9 @@ function App() {
     }
     setProducts([...products, { name: curatedProductName, units, value: Number(value) }]);
 
-    form.reset();
+    // form.reset();
 
-    productInputRef.current?.focus();
+    setOpenForm(false);
   }
 
   function calculateTotal() {
@@ -122,10 +124,6 @@ function App() {
     setShowAlert(false);
   }
 
-  function handleCancel() {
-    setShowAlert(false);
-  }
-
   function handleConfirm() {
     deleteProduct();
     closeAlert();
@@ -134,7 +132,6 @@ function App() {
   return (
     <Container className="App">
       <Main>
-        <Title>Shop list</Title>
         <Modal isOpen={openForm} onClose={handleOpenForm}>
           <AddProductForm forwardedRef={productInputRef} onSubmit={handleSubmit} />
         </Modal>
@@ -142,17 +139,16 @@ function App() {
           isOpen={showAlert}
           message="Vas eliminar un producto de la lista, estas seguro?"
           title="Are you sure about that ?"
-          onCancel={handleCancel}
+          onCancel={closeAlert}
           onClose={closeAlert}
           onConfirm={handleConfirm}
         />
 
-        <Subtitle>Lista de productos</Subtitle>
         <ListOfProducts products={products} onDelete={handleDelete} />
       </Main>
       <Footer>
-        <Subtitle>Total</Subtitle>
-        <p>{calculateTotal()}</p>
+        <h2>Total</h2>
+        <h2>${calculateTotal()}</h2>
       </Footer>
       <FloatingButton onClick={handleOpenForm}>+</FloatingButton>
     </Container>

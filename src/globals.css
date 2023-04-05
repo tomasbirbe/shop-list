@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
+
 /*
   Josh's Custom CSS Reset
   https://www.joshwcomeau.com/css/custom-css-reset/
@@ -15,6 +18,7 @@
 html,
 body {
 	height: 100%;
+	font-family: 'Heebo', sans-serif;
 }
 
 body {
@@ -46,6 +50,7 @@ h4,
 h5,
 h6 {
 	overflow-wrap: break-word;
+	font-family: 'Source Sans Pro', sans-serif;
 }
 
 #root,

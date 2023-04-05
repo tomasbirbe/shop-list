@@ -9,12 +9,26 @@ type Props = {
 const List = styled.ul({
   listStyle: "none",
   padding: "0",
-  width: "80%",
+  width: "90%",
+  display: "flex",
+  flexDirection: "column",
+  gap: "15px",
 });
 
 const Product = styled.li({
   display: "flex",
   justifyContent: "space-between",
+  background: "#F8EBAC",
+  paddingBlock: "8px",
+  paddingInline: "16px",
+  borderRadius: "4px",
+});
+
+const Button = styled.button({
+  background: "transparent",
+  border: "none",
+  fontWeight: "bold",
+  cursor: "pointer",
 });
 
 export function ListOfProducts({ products, onDelete }: Props) {
@@ -28,7 +42,7 @@ export function ListOfProducts({ products, onDelete }: Props) {
             </p>
             <small>{product.value}</small>
           </div>
-          <button onClick={() => onDelete(product.name)}>X</button>
+          <Button onClick={() => onDelete(product.name)}>X</Button>
         </Product>
       ))}
     </List>
