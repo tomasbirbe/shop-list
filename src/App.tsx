@@ -58,7 +58,13 @@ const Footer = styled.footer({
 
 function App() {
   const [products, setProducts] = useState<Product[]>(() => {
-    return JSON.parse(window.localStorage.getItem("products") || "") || [];
+    const products = window.localStorage.getItem("products");
+
+    if (products) {
+      return JSON.parse(products);
+    }
+
+    return [];
   });
   const [openForm, setOpenForm] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
