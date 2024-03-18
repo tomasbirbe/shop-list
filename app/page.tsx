@@ -12,6 +12,8 @@ type Product = {
 	amount: number;
 }
 
+const formatter = new Intl.NumberFormat('es-AR', { style: 'currency', currency	: 'ARS', minimumFractionDigits:0})
+
 export default function Home() {
 	const [products, setProducts] = useState<Array<Product>>([])
 	const [IsModalOpen, setIsModalOpen] = useState(false)
@@ -28,10 +30,11 @@ export default function Home() {
 			amount: formData.get('amount')?.toString().trim().toLocaleLowerCase(),
 		}
 
-		if (name && price && amount) {
+
+		if (name && price) {
 			const exists = products.some((product) => product.name === name)
-			if(!exists) {
-				setProducts((products) => [...products, { name, price: Number(price), amount: Number(amount) }])
+			if (!exists) {
+				setProducts((products) => [...products, { name, price: Number(price), amount: Number(amount || 1) }])
 				setIsModalOpen(false)
 			}
 		}
@@ -43,7 +46,15 @@ export default function Home() {
 	}
 
 	function removeProduct(productToRemove: Product['name']) {
-		setProducts((products) => products.filter((product) => product.name !== productToRemove)) 
+		setProducts((products) => products.filter((product) => product.name !== productToRemove))
+	}
+
+	function calculateTotal() {
+		const total = products.reduce((acum, product) => {
+			return acum + (product.price * product.amount)
+		}, 0)
+		console.log(total)
+		return formatter.format(total)
 	}
 
 	return (
@@ -54,7 +65,7 @@ export default function Home() {
 						{products.map((product) => <li key={product.name} className="capitalize bg-[whitesmoke] rounded-[6px] py-6 px-4 flex justify-between">
 							<div>
 								<p>{product.name}</p>
-								<p className="opacity-70">{product.amount}</p>
+								<p className="opacity-70">{formatter.format(product.price)} - {product.amount}</p>
 							</div>
 							<div>
 								<Button variant='ghost' onClick={() => removeProduct(product.name)}>X</Button>
@@ -74,11 +85,11 @@ export default function Home() {
 						<form className="flex flex-col gap-4" id="add-product" onSubmit={addProduct}>
 							<div className="flex flex-col gap-2">
 								<Label htmlFor="name">Nombre del producto</Label>
-								<Input id="name" name="name" />
+								<Input id="name" name="name" required />
 							</div>
 							<div className="flex flex-col gap-2">
 								<Label htmlFor="price">Precio del producto</Label>
-								<Input name="price" id="price" type="number" />
+								<Input name="price" id="price" type="number" step={'0.01'} required />
 							</div>
 							<div className="flex flex-col gap-2">
 								<Label htmlFor="amount">Cantidad del producto</Label>
@@ -91,7 +102,7 @@ export default function Home() {
 					</DialogContent>
 				</Dialog>
 
-				<p>$500000</p>
+				<p>{calculateTotal()}</p>
 			</div>
 
 
