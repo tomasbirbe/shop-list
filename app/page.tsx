@@ -31,7 +31,7 @@ const numberSchema = z.coerce.number()
 const formatter = new Intl.NumberFormat('es-AR', { style: 'currency', currency	: 'ARS', minimumFractionDigits:0})
 
 export default function Home() {
-	const [products, setProducts] = useState<Array<Product>>(() => JSON.parse(localStorage.getItem('cart') || '[]') )
+	const [products, setProducts] = useState<Array<Product>>([])
 	const [IsModalOpen, setIsModalOpen] = useState(false)
 	const formSchema = z.object({
 		name: z.string().trim().toLowerCase().min(1, {message: 'Debe definir un nombre para el producto'}).refine((val) => !products.some((product) => product.name === val), {message: 'Nombre duplicado'}),
@@ -49,6 +49,10 @@ export default function Home() {
 			amount: '',	
 		}
   })
+
+	useEffect(() => {
+		setProducts(JSON.parse(localStorage.getItem('cart') || '[]'))
+	},[])
 
 	useEffect(() => {
 		form.reset()
