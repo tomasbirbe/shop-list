@@ -85,7 +85,7 @@ export default function Home() {
 	}
 
 	return (
-		<main className="max-w-[800px] h-screen mx-auto grid grid-rows-[1fr_auto] overflow-hidden justify-items-center">
+		<main className="max-w-[800px] h-[100lvh] mx-auto grid grid-rows-[1fr_auto] overflow-hidden justify-items-center">
 			{
 				products.length > 0 ?
 					<ul className="w-full flex flex-col gap-4 overflow-auto pt-2 px-3">
