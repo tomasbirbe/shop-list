@@ -85,7 +85,7 @@ export default function Home() {
 	}
 
 	return (
-		<main className="w-max-[800px] h-screen mx-auto grid grid-rows-[1fr_auto] overflow-hidden justify-items-center">
+		<main className="max-w-[800px] h-screen mx-auto grid grid-rows-[1fr_auto] overflow-hidden justify-items-center">
 			{
 				products.length > 0 ?
 					<ul className="w-full flex flex-col gap-4 overflow-auto pt-2 px-3">
@@ -115,7 +115,7 @@ export default function Home() {
 							</div>
 						</li>)}
 					</ul>
-					: <h1 className="py-52 opacity-50">Esta lista esta vacia 🙈</h1>
+					: <h1 className="self-center opacity-50">Esta lista esta vacia 🙈</h1>
 			}
 			<div className="w-full flex justify-between items-center relative flex-cols py-4 bg-[whitesmoke] px-8 rounded-[6px]">
 				<p>Total</p>
