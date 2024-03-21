@@ -4,7 +4,6 @@ import { AlertDialogHeader, AlertDialogFooter } from "@/components/ui/alert-dial
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 import { useEffect, useState } from "react";
 import {z} from 'zod'
@@ -13,7 +12,6 @@ import { useForm } from "react-hook-form"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,14 +25,13 @@ type Product = {
 }
 
 
-const numberSchema = z.coerce.number()
 const formatter = new Intl.NumberFormat('es-AR', { style: 'currency', currency	: 'ARS', minimumFractionDigits:0})
 
 export default function Home() {
 	const [products, setProducts] = useState<Array<Product>>([])
 	const [IsModalOpen, setIsModalOpen] = useState(false)
 	const formSchema = z.object({
-		name: z.string().trim().toLowerCase().min(1, {message: 'Debe definir un nombre para el producto'}).refine((val) => !products.some((product) => product.name === val), {message: 'Nombre duplicado'}),
+		name: z.string().trim().toLowerCase().min(1, {message: 'Debe definir un nombre para el producto'}).refine((val) => !products.some((product) => product.name === val), {message: 'Este producto ya existe'}),
 		price: z.coerce.number({invalid_type_error: 'Debe ingresar un numero'}).positive({message: 'El valor debe ser positivo'}),
 		amount: z.coerce.number().int({message: 'El valor debe ser un numero entero'}).positive({ message: 'El valor debe ser positivo'}).optional().or(z.string().max(0))
 	})
@@ -88,10 +85,10 @@ export default function Home() {
 	}
 
 	return (
-		<main className="w-[800px] min-h-screen mx-auto grid grid-rows-[1fr_auto] justify-items-center pt-4">
+		<main className="w-max-[800px] h-screen mx-auto grid grid-rows-[1fr_auto] overflow-hidden justify-items-center">
 			{
 				products.length > 0 ?
-					<ul className="w-full flex flex-col gap-4">
+					<ul className="w-full flex flex-col gap-4 overflow-auto pt-2 px-3">
 						{products.map((product) => <li key={product.name} className="capitalize bg-[whitesmoke] rounded-[6px] py-6 px-4 flex justify-between">
 							<div>
 								<p>{product.name}</p>
@@ -120,10 +117,10 @@ export default function Home() {
 					</ul>
 					: <h1 className="py-52 opacity-50">Esta lista esta vacia 🙈</h1>
 			}
-			<div className="w-full flex justify-between items-center flex-cols py-4 bg-[whitesmoke] px-8 rounded-[6px]">
+			<div className="w-full flex justify-between items-center relative flex-cols py-4 bg-[whitesmoke] px-8 rounded-[6px]">
 				<p>Total</p>
 				<Dialog open={IsModalOpen} onOpenChange={toggleModal}>
-					<DialogTrigger className="w-[40px] h-[40px]">+</DialogTrigger>
+					<DialogTrigger className="w-[60px] h-[60px] absolute top-[-20px] rounded-full bg-white left-[calc(50%-30px)] ">+</DialogTrigger>
 					<DialogContent className="w-[300px]">
 						<DialogHeader>
 							<DialogTitle>Agregar producto</DialogTitle>
