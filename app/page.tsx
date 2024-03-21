@@ -72,9 +72,9 @@ export default function Home() {
 	}
 
 	function removeProduct(productToRemove: Product['name']) {
-		const updateProducts = products.filter((product) => product.name !== productToRemove)
-		setProducts(updateProducts)
-		localStorage.setItem('cart', JSON.stringify(updateProducts))
+		const updatedProducts = products.filter((product) => product.name !== productToRemove)
+		setProducts(updatedProducts)
+		localStorage.setItem('cart', JSON.stringify(updatedProducts))
 	}
 
 	function calculateTotal() {
@@ -84,11 +84,16 @@ export default function Home() {
 		return formatter.format(total)
 	}
 
+	function removeAllProducts() {
+		setProducts([]);
+		localStorage.setItem('cart', JSON.stringify([]))
+	}
+
 	return (
 		<main className="max-w-[800px] h-[100svh] mx-auto grid grid-rows-[1fr_auto] overflow-hidden justify-items-center">
 			{
 				products.length > 0 ?
-					<ul className="w-full flex flex-col gap-4 overflow-auto pt-2 px-3">
+					<ul className="w-full flex flex-col gap-4 overflow-auto py-2 px-3">
 						{products.map((product) => <li key={product.name} className="capitalize bg-[whitesmoke] rounded-[6px] py-6 px-4 flex justify-between">
 							<div>
 								<p>{product.name}</p>
@@ -101,7 +106,7 @@ export default function Home() {
 							</AlertDialogTrigger>
 							<AlertDialogContent className="w-[350px]">
 								<AlertDialogHeader>
-									<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+									<AlertDialogTitle>Eliminar producto</AlertDialogTitle>
 									<AlertDialogDescription>
 										Esta accion no se puede deshacer. Vas a eliminar este producto de la lista?
 									</AlertDialogDescription>
@@ -114,6 +119,23 @@ export default function Home() {
 						</AlertDialog>
 							</div>
 						</li>)}
+						<li className="flex w-full justify-end">								<AlertDialog>
+							<AlertDialogTrigger asChild>
+								<Button>Eliminar lista</Button>
+							</AlertDialogTrigger>
+							<AlertDialogContent className="w-[350px]">
+								<AlertDialogHeader>
+									<AlertDialogTitle>Vaciar lista</AlertDialogTitle>
+									<AlertDialogDescription>
+										Esta accion no se puede deshacer. Vas a vaciar la lista?
+									</AlertDialogDescription>
+								</AlertDialogHeader>
+								<AlertDialogFooter>
+									<AlertDialogCancel>Cancelar</AlertDialogCancel>
+									<AlertDialogAction onClick={() => removeAllProducts()}>Continuar</AlertDialogAction>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialog></li>	
 					</ul>
 					: <h1 className="self-center opacity-50">Esta lista esta vacia 🙈</h1>
 			}
